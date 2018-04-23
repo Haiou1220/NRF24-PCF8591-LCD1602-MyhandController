@@ -6,9 +6,10 @@
 *  日期：2015-8-17
 *   QQ : 2246080671
 *  晶振:11.0592MHZ
-*	 更改记录：未更改
+*	 更改记录：未更改 看看看看github会不会检测到 我打这一行字的变化
 ******************************************************************/
 #include <reg52.h>
+
 #include "24l01.h"	 //function
 #include "reg24l01.h" //commands and registers
 #include "uart.h" //UART函数声明
