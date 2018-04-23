@@ -1,0 +1,59 @@
+C51 COMPILER V9.02   ADC                                                                   04/15/2018 03:37:19 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN ADC.OBJ
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE ADC.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include <I2C.h>
+   3          
+   4          /* 读取当前的ADC转换值，chn-ADC通道号0~3 */
+   5          unsigned char GetADCValue(unsigned char chn)
+   6          {
+   7   1          unsigned char val;
+   8   1          
+   9   1          I2CStart();
+  10   1          if (!I2CWrite(0x48<<1))  //寻址PCF8591，如未应答，则停止操作并返回0
+  11   1          {
+  12   2              I2CStop();
+  13   2              return 0;
+  14   2          }
+  15   1          I2CWrite(0x40|chn);        //写入控制字节，选择转换通道
+  16   1          I2CStart();
+  17   1          I2CWrite((0x48<<1)|0x01);  //寻址PCF8591，指定后续为读操作    
+  18   1          I2CReadACK();              //先空读一个字节，提供采样转换时间
+  19   1          val = I2CReadNAK();        //读取刚刚转换完的值
+  20   1          I2CStop();
+  21   1          
+  22   1          return val;
+  23   1      }
+  24          
+  25          /* ADC转换值转为实际电压值的字符串形式，str-字符串指针，val-AD转换值 */
+  26          void ValueToString(unsigned char *str, unsigned char val)
+  27          {
+  28   1          //电压值=转换结果*2.5V/255，式中的25隐含了一位十进制小数
+  29   1                                         /*val = (val*50) / 255;  /*val = (val*25) / 255; */
+  30   1              str[0] = (val/100) + '0';      /*百位*//*str[0] = (val/10) + '0';  //整数位字符 */
+  31   1          str[1] = (val/10)%10 + '0';    /*十位*//*str[1] = '.'; //小数点     */
+  32   1          str[2] = (val%10) + '0';       /*个位*///小数位字符
+  33   1      
+  34   1          str[3] = '\0'; /*str[3] = 'V'; //电压单位*/
+  35   1                        /* str[4] = '\0';   //结束符  */
+  36   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     99    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

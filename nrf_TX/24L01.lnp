@@ -1,0 +1,9 @@
+"STARTUP.obj",
+"main.obj",
+"24l01.obj",
+"uart.obj",
+"ADC.obj",
+"I2C.obj",
+"Lcd1602.obj" 
+TO "24L01" 
+RAMSIZE(256) 
