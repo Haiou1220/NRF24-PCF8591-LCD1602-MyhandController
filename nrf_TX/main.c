@@ -12,9 +12,13 @@
 
 #include "24l01.h"	 //function
 #include "reg24l01.h" //commands and registers
-#include "uart.h" //UART函数声明
-#include "Lcd1602.h"
+#include "uart.h" //UART
+
 #include "ADC.h"
+
+
+#include "Lcd1602.h" 
+
 /******************************************/
 void ConfigTimer0(unsigned int ms); //定时器t0
 void delay_ms(unsigned int x);    //延时函数
